@@ -74,6 +74,21 @@
     0% { opacity: 0.9; transform: scale(0.4); }
     100% { opacity: 0; transform: scale(3.2); }
   }
+
+  .hero .contact {
+    margin-top: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    font: 500 12px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.1em;
+    color: var(--ui-dim);
+    pointer-events: auto;
+  }
+  .hero .contact a {
+    color: var(--ui-fg);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+  .hero .contact a:hover { color: var(--ui-accent); }
 </style>
 </head>
 <body>
@@ -95,6 +110,11 @@
 <div class="hero">
   <h1 class="brand">HAKKA.DEV</h1>
   <div class="tagline">Your solution begins here</div>
+  <div class="contact">
+    <span><a href="mailto:me@hakka.dev">me@hakka.dev</a></span>
+    <span>·</span>
+    <span><a href="tel:+66925905444">092-590-5444</a></span>
+  </div>
 </div>
 
 <script id="vs" type="x-shader/x-vertex">
