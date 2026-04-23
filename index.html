@@ -38,26 +38,74 @@
     background: var(--ui-accent); box-shadow: 0 0 12px var(--ui-accent);
   }
 
-  .hero {
+  /* Landing hero */
+  .landing {
     position: fixed; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
     z-index: 5;
     text-align: center;
+    transition: opacity 300ms ease;
   }
-  .hero .brand {
+  .landing.hidden { opacity: 0; }
+  .landing .brand {
     font: 200 96px/0.95 "Inter", ui-sans-serif, system-ui, sans-serif;
     letter-spacing: -0.02em;
     color: rgba(255,255,255,0.92);
     text-shadow: 0 6px 40px rgba(0,0,0,0.45);
     margin: 0;
   }
-  .hero .tagline {
+  .landing .tagline {
     margin-top: 16px;
     font: 500 13px/1 ui-monospace, "SF Mono", Menlo, monospace;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: rgba(255,255,255,0.50);
+  }
+  .landing .contact {
+    margin-top: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    font: 500 12px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.1em;
+    color: var(--ui-dim);
+    pointer-events: auto;
+  }
+  .landing .contact a {
+    color: var(--ui-fg);
+    text-decoration: none;
+    transition: color 160ms ease;
+  }
+  .landing .contact a:hover { color: var(--ui-accent); }
+  .landing .portfolio-btn {
+    margin-top: 28px;
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 28px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    color: var(--ui-fg);
+    font: 500 13px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: background 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .landing .portfolio-btn:hover {
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .landing .portfolio-btn .kbd {
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+    color: var(--ui-dim);
+    border: 1px solid rgba(255,255,255,0.08);
   }
 
   .ghost {
@@ -75,20 +123,306 @@
     100% { opacity: 0; transform: scale(3.2); }
   }
 
-  .hero .contact {
-    margin-top: 24px;
-    display: flex; align-items: center; justify-content: center; gap: 24px;
-    font: 500 12px/1 ui-monospace, "SF Mono", Menlo, monospace;
-    letter-spacing: 0.1em;
+  /* ======================= About Window ======================= */
+  .about {
+    position: fixed;
+    top: 72px; left: 50%;
+    transform: translate(-50%, 0);
+    width: min(960px, calc(100vw - 48px));
+    max-height: calc(100vh - 120px);
+    background: rgba(10, 12, 18, 0.62);
+    backdrop-filter: blur(30px) saturate(160%);
+    -webkit-backdrop-filter: blur(30px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 16px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08);
+    z-index: 30;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transition: opacity 240ms ease, transform 240ms ease;
+  }
+  .about.open {
+    opacity: 1; pointer-events: auto;
+    transform: translate(-50%, 0) scale(1);
+  }
+  .about.closing { opacity: 0; transform: translate(-50%, 10px) scale(0.985); }
+
+  .about .titlebar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    cursor: grab; user-select: none;
+  }
+  .about .titlebar:active { cursor: grabbing; }
+  .about .traffic { display: flex; gap: 7px; }
+  .about .traffic i {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #3b4050; display: block;
+    border: 1px solid rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: background 120ms ease, box-shadow 120ms ease;
+  }
+  .about .traffic i.r { background: #ff5f57; }
+  .about .traffic i.y { background: #febc2e; }
+  .about .traffic i.g { background: #28c840; }
+  .about .traffic i:hover { box-shadow: 0 0 0 2px rgba(255,255,255,0.08); }
+  .about .tbtitle {
+    font: 600 12px/1 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--ui-dim);
-    pointer-events: auto;
+    flex: 1; text-align: center;
   }
-  .hero .contact a {
-    color: var(--ui-fg);
+  .about .tbtitle .slash { color: rgba(255,255,255,0.25); margin: 0 8px; }
+  .about .tbtitle .path { color: var(--ui-fg); }
+  .about .tbmeta {
+    font: 500 10px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--ui-dim);
+    letter-spacing: 0.14em;
+  }
+
+  .about .body {
+    overflow-y: auto; overflow-x: hidden;
+    padding: 28px 32px 32px;
+    scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.14) transparent;
+  }
+  .about .body::-webkit-scrollbar { width: 8px; }
+  .about .body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 8px; }
+
+  /* Hero inside About */
+  .hero {
+    text-align: center;
+    padding: 14px 0 26px;
+    border-bottom: 1px dashed rgba(255,255,255,0.10);
+    display: flex; flex-direction: column; align-items: center; gap: 18px;
+  }
+  .hero .mark {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 6px 12px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.03);
+    font: 500 10px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ui-dim);
+  }
+  .hero .mark .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ui-accent); box-shadow: 0 0 10px var(--ui-accent);
+  }
+  .hero .mark strong { color: var(--ui-fg); font-weight: 600; }
+  .hero h2 {
+    margin: 0;
+    font: 200 88px/0.92 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.05em; color: #fff;
+    background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.65) 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h2 .dotpunct { color: var(--ui-accent); -webkit-text-fill-color: var(--ui-accent); }
+  .hero .tag {
+    margin: 0;
+    font: 300 18px/1.4 "Inter", ui-sans-serif, system-ui, sans-serif;
+    color: rgba(240,244,255,0.80);
+    letter-spacing: 0.01em;
+  }
+  .hero .name {
+    font: 500 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--ui-dim);
+  }
+  .hero .links {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    margin-top: 4px;
+  }
+  .hero .links a {
     text-decoration: none;
-    transition: color 160ms ease;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.03);
+    color: var(--ui-fg);
+    font: 500 12px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.04em;
+    transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
   }
-  .hero .contact a:hover { color: var(--ui-accent); }
+  .hero .links a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.26); transform: translateY(-1px); }
+  .hero .links a svg { width: 13px; height: 13px; opacity: 0.8; }
+  .hero .stats {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin-top: 6px;
+  }
+  .hero .stat {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 10px 18px; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; background: rgba(255,255,255,0.03);
+    min-width: 110px;
+  }
+  .hero .stat .n {
+    font: 300 26px/1 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em; color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+  .hero .stat .k {
+    margin-top: 5px;
+    font: 500 9px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ui-dim);
+  }
+
+  /* Featured stack */
+  .featured { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 22px 0; }
+  .featured .card {
+    position: relative;
+    padding: 18px 20px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(27,214,168,0.08), rgba(106,87,255,0.05) 60%, transparent);
+    overflow: hidden;
+  }
+  .featured .card.ai { background: linear-gradient(135deg, rgba(255,121,200,0.08), rgba(106,87,255,0.08) 60%, transparent); }
+  .featured .card::before {
+    content: ""; position: absolute; inset: -1px;
+    background: radial-gradient(circle at 0% 0%, rgba(184,255,232,0.18), transparent 50%);
+    pointer-events: none; opacity: 0.8;
+  }
+  .featured .card.ai::before {
+    background: radial-gradient(circle at 100% 0%, rgba(255,121,200,0.18), transparent 50%);
+  }
+  .featured .card .fmark {
+    font: 500 9px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--ui-accent);
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .featured .card.ai .fmark { color: #ff9cd4; }
+  .featured .card .fmark i {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; box-shadow: 0 0 10px currentColor;
+  }
+  .featured .card h3 {
+    margin: 0;
+    font: 300 28px/1.05 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: -0.02em; color: #fff;
+  }
+  .featured .card p {
+    margin: 8px 0 14px;
+    font: 400 13px/1.5 "Inter", ui-sans-serif, system-ui, sans-serif;
+    color: rgba(240,244,255,0.68);
+  }
+  .featured .card .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Chips */
+  .chip2 {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.04);
+    color: rgba(240,244,255,0.88);
+    font: 500 11px/1 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.01em;
+    transition: background 140ms ease, border-color 140ms ease, transform 140ms ease, color 140ms ease;
+    cursor: default;
+  }
+  .chip2:hover { background: rgba(255,255,255,0.09); border-color: rgba(255,255,255,0.24); color: #fff; transform: translateY(-1px); }
+  .chip2 .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ui-accent); box-shadow: 0 0 6px var(--ui-accent); }
+
+  /* Skills grid */
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 30px 0 14px;
+  }
+  .section-head h4 {
+    margin: 0;
+    font: 600 11px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--ui-fg);
+  }
+  .section-head .rule {
+    flex: 1; height: 1px; background: rgba(255,255,255,0.08);
+    margin: 0 16px;
+  }
+  .section-head .count {
+    font: 500 10px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.16em; color: var(--ui-dim);
+  }
+
+  .cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cat {
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.025);
+    padding: 14px 16px 16px;
+    transition: border-color 160ms ease, background 160ms ease;
+  }
+  .cat:hover { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
+  .cat .hd {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cat .hd .catname {
+    font: 600 12px/1 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.05em; color: #fff;
+  }
+  .cat .hd .num {
+    font: 500 9px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.2em; color: var(--ui-dim);
+  }
+  .cat .hd .ico { color: var(--ui-accent); margin-right: 8px; }
+  .cat .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Contact */
+  .about-contact {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px dashed rgba(255,255,255,0.10);
+  }
+  .about-contact a {
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+    color: var(--ui-fg);
+    font: 500 12px/1 "Inter", ui-sans-serif, system-ui, sans-serif;
+    letter-spacing: 0.02em;
+    transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+  }
+  .about-contact a:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.26); transform: translateY(-1px); }
+  .about-contact a svg { width: 14px; height: 14px; }
+  .about-contact .spacer { flex: 1; }
+  .about-contact .foot {
+    align-self: center;
+    font: 500 10px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--ui-dim);
+  }
+
+  /* Entrance stagger */
+  @keyframes riseIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .about.open .body > * { animation: riseIn 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  .about.open .body > *:nth-child(1) { animation-delay: 40ms; }
+  .about.open .body > *:nth-child(2) { animation-delay: 110ms; }
+  .about.open .body > *:nth-child(3) { animation-delay: 180ms; }
+  .about.open .body > *:nth-child(4) { animation-delay: 250ms; }
+  .about.open .body > *:nth-child(5) { animation-delay: 320ms; }
+
+  @media (max-width: 720px) {
+    .about { width: calc(100vw - 20px); top: 60px; max-height: calc(100vh - 100px); }
+    .about .body { padding: 20px; }
+    .hero h2 { font-size: 56px; }
+    .hero .tag { font-size: 15px; }
+    .featured, .cats { grid-template-columns: 1fr; }
+    .landing .brand { font-size: 56px; }
+  }
 </style>
 </head>
 <body>
@@ -107,13 +441,113 @@
   </div>
 </div>
 
-<div class="hero">
+<div class="landing" id="landing">
   <h1 class="brand">HAKKA.DEV</h1>
   <div class="tagline">Your solution begins here</div>
   <div class="contact">
     <span><a href="mailto:me@hakka.dev">me@hakka.dev</a></span>
     <span>·</span>
     <span><a href="tel:+66925905444">092-590-5444</a></span>
+  </div>
+  <div class="portfolio-btn" id="hintKey">Open Portfolio <span class="kbd">I</span></div>
+</div>
+
+<div class="about" id="about" role="dialog" aria-label="About — Khomkrid Lerdprasert">
+  <div class="titlebar" id="aboutTitlebar">
+    <div class="traffic">
+      <i class="r" id="aboutClose" title="Close"></i>
+      <i class="y" id="aboutMin" title="Minimize"></i>
+      <i class="g"></i>
+    </div>
+    <div class="tbtitle">
+      <span>~</span><span class="slash">/</span><span class="path">about</span><span class="slash">/</span><span>khomkrid.md</span>
+    </div>
+    <div class="tbmeta">I · ESC</div>
+  </div>
+  <div class="body">
+
+    <section class="hero">
+      <div class="mark"><span class="dot"></span><strong>HAKKA.DEV</strong> · PORTFOLIO</div>
+      <h1 class="name">Khomkrid Lerdprasert</h1>
+      <h2>HAKKA<span class="dotpunct">.</span>DEV</h2>
+      <p class="tag">Your solution begins here.</p>
+      <div class="links">
+        <a href="mailto:me@hakka.dev">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          me@hakka.dev
+        </a>
+        <a href="tel:+66925905444">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          092-590-5444
+        </a>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="n">20+</div><div class="k">Years shipping</div></div>
+        <div class="stat"><div class="n">8+</div><div class="k">Messaging channels</div></div>
+        <div class="stat"><div class="n">5</div><div class="k">Flagship platforms</div></div>
+      </div>
+    </section>
+
+    <section class="featured">
+      <div class="card">
+        <div class="fmark"><i></i>PRIMARY LANGUAGE</div>
+        <h3>Go · a decade in.</h3>
+        <p>Fiber, Echo, GORM, GraphQL, Pub/Sub, hexagonal architecture. Versions 1.21 through 1.25 in production.</p>
+        <div class="chips">
+          <span class="chip2"><span class="dot"></span>Go 1.21–1.25</span>
+          <span class="chip2">Fiber v2</span>
+          <span class="chip2">Echo</span>
+          <span class="chip2">GORM</span>
+          <span class="chip2">GraphQL</span>
+          <span class="chip2">Hexagonal / DDD</span>
+        </div>
+      </div>
+      <div class="card ai">
+        <div class="fmark"><i></i>AI / LLM STACK</div>
+        <h3>RAG, embeddings, NL to SQL.</h3>
+        <p>LangChainGo orchestration over OpenAI, Gemini, Groq, and local Ollama. pgvector as the memory layer.</p>
+        <div class="chips">
+          <span class="chip2"><span class="dot"></span>LangChainGo</span>
+          <span class="chip2">pgvector</span>
+          <span class="chip2">OpenAI</span>
+          <span class="chip2">Gemini</span>
+          <span class="chip2">Groq</span>
+          <span class="chip2">Ollama</span>
+          <span class="chip2">NL to SQL</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h4>Skills</h4>
+        <div class="rule"></div>
+        <span class="count" id="skillCount">-- items</span>
+      </div>
+      <div class="cats" id="cats"></div>
+    </section>
+
+    <section class="about-contact">
+      <a href="mailto:me@hakka.dev">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        Email
+      </a>
+      <a href="https://github.com/aofiee" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.7.11 2.5.34 1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+        GitHub
+      </a>
+      <a href="tel:+66925905444">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        092-590-5444
+      </a>
+      <a href="https://www.hakka.dev" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+        hakka.dev
+      </a>
+      <div class="spacer"></div>
+      <div class="foot">© Khomkrid Lerdprasert</div>
+    </section>
+
   </div>
 </div>
 
@@ -295,7 +729,7 @@ void main(){
     state.mouse[1] = 1.0 - e.clientY / window.innerHeight;
   });
   window.addEventListener('pointerdown', (e) => {
-    if(e.target.closest('.topbar')) return;
+    if(e.target.closest('.topbar') || e.target.closest('.about')) return;
     state.click[0] = e.clientX / window.innerWidth;
     state.click[1] = 1.0 - e.clientY / window.innerHeight;
     state.clickT = 0;
@@ -306,6 +740,94 @@ void main(){
     document.body.appendChild(g);
     setTimeout(()=>g.remove(), 700);
   });
+
+  // ---------- About window ----------
+  const SKILLS = [
+    { name: 'Languages & Runtimes', ico: '\u2318', items: ['Go 1.21\u20131.25','TypeScript','JavaScript','PHP','Laravel','CodeIgniter','Drupal','Objective-C','Dart (Flutter)','Perl','HTML','CSS'] },
+    { name: 'Backend Frameworks',   ico: '\u2699',  items: ['Go Fiber v2','Go Echo','GORM','GraphQL (Go)','LangChainGo','Node.js','Laravel'] },
+    { name: 'Frontend Frameworks',  ico: '\u25E7',  items: ['Next.js 14 (App Router)','React 18','Tailwind CSS','React Query','Cocos2D'] },
+    { name: 'Databases & Storage',  ico: '\u25C8',  items: ['PostgreSQL','pgvector','MySQL','Redis','Google Cloud Storage','Firebase'] },
+    { name: 'AI / LLM',             ico: '\u2726',  items: ['OpenAI API','Google Gemini','Ollama','Groq','RAG Pipeline','LangChainGo','NL \u2192 SQL'] },
+    { name: 'Cloud & Infra',        ico: '\u2601',  items: ['GCP Pub/Sub','GCP Logging','GCP Profiler','Artifact Registry','AWS Rekognition','Docker','Docker Compose','BuildKit','Jenkins'] },
+    { name: 'Real-time & Messaging', ico: '\u25C9', items: ['WebSocket','SSE','Cloud Pub/Sub','LINE Bot SDK','LINE Messaging','LINE Beacon','Messenger API','Instagram API','WhatsApp API','TikTok API','Gmail API'] },
+    { name: 'Payments & Fintech',   ico: '\u00A4',  items: ['Stripe','2C2P','KBank QR','Crypto Wallet','Blockchain'] },
+    { name: 'Video & Media',        ico: '\u25B6',  items: ['Agora SDK (live video)','Digital Signage (Raspberry Pi)'] },
+    { name: 'Identity & Security',  ico: '\u25C7',  items: ['Firebase Auth','JWT','eKYC (AWS Rekognition)','RBAC','OAuth token mgmt'] },
+    { name: 'Integration & E-com',  ico: '\u21C4',  items: ['Shopify','HubSpot','Shopee','Lazada'] },
+    { name: 'Architecture',         ico: '\u25F0',  items: ['Hexagonal / Clean','Microservices','Domain-Driven Design','Agile / Scrum','Unit Testing','Robot Testing'] },
+    { name: 'Soft Skills',          ico: '\u2604',  items: ['Technical Leadership','Mentorship','Project Management','Requirements Analysis','System Architecture','Stakeholder Comms','People Management','Team Building'] },
+  ];
+  const HIGHLIGHT = new Set(['Go 1.21\u20131.25','LangChainGo','pgvector','RAG Pipeline','NL \u2192 SQL','OpenAI API','Google Gemini']);
+
+  const catsEl = document.getElementById('cats');
+  let totalSkills = 0;
+  SKILLS.forEach((cat, i) => {
+    totalSkills += cat.items.length;
+    const div = document.createElement('div');
+    div.className = 'cat';
+    const chips = cat.items.map(it => {
+      const hi = HIGHLIGHT.has(it) ? '<span class="dot"></span>' : '';
+      return '<span class="chip2">' + hi + it + '</span>';
+    }).join('');
+    div.innerHTML =
+      '<div class="hd">' +
+        '<div class="catname"><span class="ico">' + cat.ico + '</span> ' + cat.name + '</div>' +
+        '<div class="num">' + String(i+1).padStart(2,'0') + ' \u00B7 ' + cat.items.length + '</div>' +
+      '</div>' +
+      '<div class="chips">' + chips + '</div>';
+    catsEl.appendChild(div);
+  });
+  document.getElementById('skillCount').textContent = totalSkills + ' items \u00B7 13 categories';
+
+  const aboutEl = document.getElementById('about');
+  const landingEl = document.getElementById('landing');
+
+  function openAbout(){
+    aboutEl.classList.remove('closing');
+    aboutEl.classList.add('open');
+    landingEl.classList.add('hidden');
+  }
+  function closeAbout(){
+    if(!aboutEl.classList.contains('open')) return;
+    aboutEl.classList.add('closing');
+    aboutEl.classList.remove('open');
+    landingEl.classList.remove('hidden');
+  }
+  function toggleAbout(){
+    aboutEl.classList.contains('open') ? closeAbout() : openAbout();
+  }
+
+  document.getElementById('aboutClose').addEventListener('click', closeAbout);
+  document.getElementById('aboutMin').addEventListener('click', closeAbout);
+  document.getElementById('hintKey').addEventListener('click', openAbout);
+
+  window.addEventListener('keydown', (e) => {
+    if(e.key === 'i' || e.key === 'I') toggleAbout();
+    else if(e.key === 'Escape') closeAbout();
+  });
+
+  // drag
+  (function(){
+    const bar = document.getElementById('aboutTitlebar');
+    let drag = null;
+    bar.addEventListener('pointerdown', (e) => {
+      if(e.target.closest('.traffic')) return;
+      const rect = aboutEl.getBoundingClientRect();
+      drag = { ox: e.clientX - rect.left, oy: e.clientY - rect.top };
+      aboutEl.style.transform = 'none';
+      aboutEl.style.left = rect.left + 'px';
+      aboutEl.style.top = rect.top + 'px';
+      bar.setPointerCapture(e.pointerId);
+    });
+    bar.addEventListener('pointermove', (e) => {
+      if(!drag) return;
+      const x = Math.max(8, Math.min(window.innerWidth - 200, e.clientX - drag.ox));
+      const y = Math.max(8, Math.min(window.innerHeight - 60, e.clientY - drag.oy));
+      aboutEl.style.left = x + 'px';
+      aboutEl.style.top = y + 'px';
+    });
+    bar.addEventListener('pointerup', () => { drag = null; });
+  })();
 
   // ---------- Clock ----------
   const clockEl = document.getElementById('clock');
